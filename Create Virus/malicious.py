@@ -38,10 +38,10 @@ def about():
 	menu()
 	
 def banner2():
-	print(""+O+"")
+    print(f"{O}")
 	
 def fontcolor():
-	print(""+W+"")
+    print(f"{W}")
 #######DONT CHANGE THIS#########
 
 #################### START ANDROID

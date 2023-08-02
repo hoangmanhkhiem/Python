@@ -15,23 +15,21 @@ class main:
   def install_tools(self):
     while True:
       tool=tools()
-      num=1
       total=len(tool.names)
       os.system("clear")
       logo.install_tools()
       print(f"\007")
-      for tool_name in tool.names:
+      for num, tool_name in enumerate(tool.names, start=1):
         print (f" {green}[ {violate}{num} {green}] {yellow}Install {green}{tool_name}{nc}")
-        num+=1
       print(f"")
       logo.back()
       cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
-      if cmd=="00" or cmd=="back":
+      if cmd in ["00", "back"]:
         self.menu()
         break
       else:
         try:
-          if int(cmd)>=1 and int(cmd)<=int(total):
+          if int(cmd) >= 1 and int(cmd) <= total:
             os.system("clear")
             logo.installing()
             print(f"{green}Installing ....{nc}")
@@ -47,22 +45,20 @@ class main:
     while True:
       tool=tools()
       total=len(tool.category)
-      num=1
       os.system("clear")
       logo.tool_header()
       print(f"")
-      for cat in tool.category:
+      for num, cat in enumerate(tool.category, start=1):
         print (f"  {green}[ {violate}{num} {green}] {yellow}{tool.category_data[cat]}{nc}")
-        num+=1
       print(f"")
       logo.back()
       cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
-      if cmd=="00" or cmd=="back":
+      if cmd in ["00", "back"]:
         self.menu()
         break
       else:
         try:
-          if int(cmd) in range(1,int(total)+1):
+          if int(cmd) in range(1, total + 1):
             while True:
               print(int(cmd)-1)
               print(tool.category[int(cmd)-1])
@@ -79,22 +75,21 @@ class main:
               print(f"")
               logo.back()
               tcmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
-              if tcmd=="00" or tcmd=="back":
+              if tcmd in ["00", "back"]:
                 break
-              else:
-                try:
-                  cat_total=len(tmp_cat_tool)
-                  if int(tcmd) in range(1,int(cat_total)+1):
-                    os.system("clear")
-                    logo.installing()
-                    print(f"{green}Installing ....{nc}")
-                    tool.install(tmp_cat_tool[int(tcmd)-1])
-                  else:
-                    print(f"\007{red}Sorry,{violate} '{tcmd}' {blue}: {red}invalid input !!{nc}")
-                    sleep(1)
-                except ValueError:
+              try:
+                cat_total=len(tmp_cat_tool)
+                if int(tcmd) in range(1, cat_total + 1):
+                  os.system("clear")
+                  logo.installing()
+                  print(f"{green}Installing ....{nc}")
+                  tool.install(tmp_cat_tool[int(tcmd)-1])
+                else:
                   print(f"\007{red}Sorry,{violate} '{tcmd}' {blue}: {red}invalid input !!{nc}")
                   sleep(1)
+              except ValueError:
+                print(f"\007{red}Sorry,{violate} '{tcmd}' {blue}: {red}invalid input !!{nc}")
+                sleep(1)
           else:
             print(f"\007{red}Sorry,{violate} '{cmd}' {blue}: {red}invalid input !!{nc}")
             sleep(1)
@@ -112,49 +107,46 @@ class main:
         if system.connection():
           os.system("clear")
           logo.updating()
-          if system.sudo != None:
-            if os.path.exists(system.home+"/Tool-X"):
-              pass
-            else:
-              os.system(system.sudo+" git clone https://github.com/rajkumardusad/Tool-X.git "+system.home+"/Tool-X")
-            if os.path.exists(system.home+"/Tool-X/install.aex"):
-              os.system("cd "+system.home+"/Tool-X && "+system.sudo+" sh install.aex")
-              if os.path.exists(system.bin+"/Tool-X") and os.path.exists(system.conf_dir+"/Tool-X"):
+          if system.sudo is None:
+            if not os.path.exists(f"{system.home}/Tool-X"):
+              os.system(
+                  f"git clone https://github.com/rajkumardusad/Tool-X.git {system.home}/Tool-X"
+              )
+            if os.path.exists(f"{system.home}/Tool-X/install.aex"):
+              os.system(f"cd {system.home}/Tool-X && sh install.aex")
+              if os.path.exists(f"{system.bin}/Tool-X") and os.path.exists(
+                  f"{system.conf_dir}/Tool-X"):
                 os.system("clear")
                 logo.updated()
-                cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
               else:
                 os.system("clear")
                 logo.update_error()
-                cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
             else:
               os.system("clear")
               logo.update_error()
-              cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
           else:
-            if os.path.exists(system.home+"/Tool-X"):
-              pass
-            else:
-              os.system("git clone https://github.com/rajkumardusad/Tool-X.git "+system.home+"/Tool-X")
-            if os.path.exists(system.home+"/Tool-X/install.aex"):
-              os.system("cd "+system.home+"/Tool-X && sh install.aex")
-              if os.path.exists(system.bin+"/Tool-X") and os.path.exists(system.conf_dir+"/Tool-X"):
+            if not os.path.exists(f"{system.home}/Tool-X"):
+              os.system(
+                  f"{system.sudo} git clone https://github.com/rajkumardusad/Tool-X.git {system.home}/Tool-X"
+              )
+            if os.path.exists(f"{system.home}/Tool-X/install.aex"):
+              os.system(f"cd {system.home}/Tool-X && {system.sudo} sh install.aex")
+              if os.path.exists(f"{system.bin}/Tool-X") and os.path.exists(
+                  f"{system.conf_dir}/Tool-X"):
                 os.system("clear")
                 logo.updated()
-                cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
               else:
                 os.system("clear")
                 logo.update_error()
-                cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
             else:
               os.system("clear")
               logo.update_error()
-              cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
+          cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
         else:
           os.system("clear")
           logo.nonet()
           tmp=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
-      elif cmd=="0" or cmd=="back":
+      elif cmd in ["0", "back"]:
         self.menu()
         break
       else:
@@ -172,7 +164,7 @@ class main:
       break
 
   @classmethod
-  def menu(self):
+  def menu(cls):
     while True:
       tool=tools()
       total=len(tool.names)
@@ -180,31 +172,31 @@ class main:
       logo.menu(total)
       cmd=input(f"{blue}Tool-X{nc}@{blue}space {yellow}$ {nc}")
       if cmd == "1":
-        self.install_tools(self)
+        cls.install_tools(cls)
         break
       elif cmd == "2":
-        self.category(self)
+        cls.category(cls)
         break
       elif cmd == "3":
-        self.update(self)
+        cls.update(cls)
         break
       elif cmd == "4":
-        self.about(self)
+        cls.about(cls)
         break
-      elif cmd=="x" or cmd=="X" or cmd=="exit":
+      elif cmd in ["x", "X", "exit"]:
         os.system("clear")
         logo.exit()
         break
-      elif cmd=="rm -t" or cmd=="rm -T" or cmd=="uninstall tool-x" or cmd=="unistall Tool-X":
+      elif cmd in ["rm -t", "rm -T", "uninstall tool-x", "unistall Tool-X"]:
         system=sys()
         if system.sudo:
-          os.system(system.sudo+" rm -rf "+system.bin+"/Tool-X")
-          os.system(system.sudo+" rm -rf "+system.bin+"/toolx")
-          os.system(system.sudo+" rm -rf "+system.conf_dir+"/Tool-X")
+          os.system(f"{system.sudo} rm -rf {system.bin}/Tool-X")
+          os.system(f"{system.sudo} rm -rf {system.bin}/toolx")
+          os.system(f"{system.sudo} rm -rf {system.conf_dir}/Tool-X")
         else:
-          os.system("rm -rf "+system.bin+"/Tool-X")
-          os.system("rm -rf "+system.bin+"/toolx")
-          os.system("rm -rf "+system.conf_dir+"/Tool-X")
+          os.system(f"rm -rf {system.bin}/Tool-X")
+          os.system(f"rm -rf {system.bin}/toolx")
+          os.system(f"rm -rf {system.conf_dir}/Tool-X")
         os.system("clear")
         logo.exit()
         break
@@ -219,9 +211,9 @@ class tools:
   category_data=None
   def __init__(self):
     system=sys()
-    with open(system.conf_dir+"/Tool-X/core/data.json") as data_file:
+    with open(f"{system.conf_dir}/Tool-X/core/data.json") as data_file:
       self.data=json.load(data_file)
-    with open(system.conf_dir+"/Tool-X/core/cat.json") as cat_file:
+    with open(f"{system.conf_dir}/Tool-X/core/cat.json") as cat_file:
       self.category_data=json.load(cat_file)
     self.names=list(self.data.keys())
     self.category=list(self.category_data.keys())
